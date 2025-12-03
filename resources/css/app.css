@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Ensure form fields show light text in dark mode */
+  html.dark input,
+  html.dark textarea,
+  html.dark select {
+    @apply text-gray-100 placeholder-gray-400;
+  }
+}
