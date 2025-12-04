@@ -36,7 +36,7 @@
               <div class="flex items-center gap-2">
                 <span class="px-3 py-1 rounded-full text-sm {{ $badgeClass }}">{{ $statusLabel }}</span>
                 @if($order->status === 'en_envio')
-                  <form method="POST" action="{{ route('orders.updateStatus', $order) }}" onsubmit="return confirm('Confirmar recepción del pedido?');">
+                  <form method="POST" action="{{ route('orders.updateStatus', $order) }}" data-confirm="Confirmar recepción del pedido?">
                     @csrf
                     @method('PATCH')
                     <input type="hidden" name="status" value="recibido">
@@ -44,7 +44,7 @@
                   </form>
                 @endif
                 @if(in_array($order->status, ['no_enviado','en_envio']))
-                  <form method="POST" action="{{ route('orders.destroy', $order) }}" onsubmit="return confirm('¿Cancelar pedido?');">
+                  <form method="POST" action="{{ route('orders.destroy', $order) }}" data-confirm="¿Cancelar pedido?">
                     @csrf
                     @method('DELETE')
                     <button class="px-3 py-1 rounded bg-red-600 text-white text-sm">Cancelar</button>

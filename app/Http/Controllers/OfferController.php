@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Conversation;
 use App\Models\Listing;
 use App\Models\Offer;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -63,6 +64,20 @@ class OfferController extends Controller
             'status' => ['required', Rule::in(['pending', 'accepted', 'rejected', 'withdrawn'])],
         ]);
         $offer->update(['status' => $validated['status']]);
+
+        // Si se rechaza una oferta, avisar al comprador en la conversaciИn.
+        if ($validated['status'] === 'rejected') {
+            $conversation = $this->findOrCreateConversationForOffer($offer);
+            if ($conversation) {
+                $conversation->messages()->create([
+                    'user_id' => $request->user()->id,
+                    'body' => 'Tu oferta ha sido rechazada',
+                    'read' => false,
+                ]);
+                $conversation->touch();
+            }
+        }
+
         return $request->wantsJson() ? response()->json($offer) : back()->with('status', 'Estado de la oferta actualizado');
     }
 
@@ -72,5 +87,30 @@ class OfferController extends Controller
         abort_unless($request->user()->id === $offer->user_id, 403);
         $offer->delete();
         return $request->wantsJson() ? response()->json(['deleted' => true]) : back()->with('status', 'Oferta eliminada');
+    }
+
+    // Busca o crea la conversaciИn entre comprador y vendedor para este anuncio.
+    private function findOrCreateConversationForOffer(Offer $offer): ?Conversation
+    {
+        $buyerId = $offer->user_id;
+        $sellerId = $offer->listing->user_id ?? null;
+
+        if (!$sellerId) {
+            return null;
+        }
+
+        $conversation = Conversation::query()
+            ->where('listing_id', $offer->listing_id)
+            ->whereHas('users', fn($q) => $q->where('users.id', $buyerId))
+            ->whereHas('users', fn($q) => $q->where('users.id', $sellerId))
+            ->first();
+
+        if (!$conversation) {
+            $conversation = new Conversation(['listing_id' => $offer->listing_id]);
+            $conversation->save();
+            $conversation->users()->sync([$buyerId, $sellerId]);
+        }
+
+        return $conversation;
     }
 }

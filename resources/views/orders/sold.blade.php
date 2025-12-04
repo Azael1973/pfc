@@ -39,7 +39,7 @@
                 @endphp
                 <span class="px-3 py-1 rounded-full text-sm {{ $badgeClass }}">{{ $statusLabel }}</span>
                 @if($order->status === 'no_enviado')
-                  <form method="POST" action="{{ route('orders.updateStatus', $order) }}" onsubmit="return confirm('Marcar como enviado?');">
+                  <form method="POST" action="{{ route('orders.updateStatus', $order) }}" data-confirm="Marcar como enviado?">
                     @csrf
                     @method('PATCH')
                     <input type="hidden" name="status" value="en_envio">

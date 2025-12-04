@@ -33,7 +33,7 @@
               <div class="text-sm text-gray-500 dark:text-gray-400">Valor: {{ $reward['value'] }} €</div>
             </div>
             <form method="POST" action="{{ route('points.redeem') }}" class="mt-4"
-                  onsubmit="return confirm('¿Estás seguro de querer canjear la recompensa? Los puntos no se pueden devolver.');">
+                  data-confirm="¿Estás seguro de querer canjear la recompensa? Los puntos no se pueden devolver.">
               @csrf
               <input type="hidden" name="reward" value="{{ $reward['key'] }}">
               <button class="w-full px-4 py-2 rounded {{ $canRedeem ? 'bg-emerald-600 text-white' : 'bg-gray-300 text-gray-600 cursor-not-allowed' }}"

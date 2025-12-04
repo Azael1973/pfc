@@ -10,7 +10,7 @@
             <details class="relative">
               <summary class="list-none cursor-pointer w-8 h-8 rounded-full flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">⋯</summary>
               <div class="absolute right-0 mt-1 w-36 bg-white dark:bg-gray-900 border rounded shadow">
-                <form method="POST" action="{{ route('conversations.destroy', $c) }}" onsubmit="return confirm('¿Eliminar este chat? Esta acción afectará a ambos participantes.');">
+                <form method="POST" action="{{ route('conversations.destroy', $c) }}" data-confirm="¿Eliminar este chat? Esta acción afectará a ambos participantes.">
                   @csrf
                   @method('DELETE')
                   <button class="w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30">Eliminar chat</button>

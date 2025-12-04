@@ -28,12 +28,20 @@
         <div class="mb-4 p-4 rounded bg-amber-50 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-700">
           <div class="text-sm text-gray-800 dark:text-gray-100">Oferta pendiente: {{ number_format($latestPendingOffer->amount, 2) }} €</div>
           <div class="text-xs text-gray-600 dark:text-gray-300 mt-1">Enviada por: {{ $latestPendingOffer->user->name ?? 'Comprador' }}</div>
-          <form method="POST" action="{{ route('offers.updateStatus', $latestPendingOffer) }}" class="mt-2">
-            @csrf
-            @method('PATCH')
-            <input type="hidden" name="status" value="accepted">
-            <button class="px-3 py-1 rounded bg-emerald-600 text-white text-sm">Aceptar oferta</button>
-          </form>
+          <div class="mt-2 flex gap-2">
+            <form method="POST" action="{{ route('offers.updateStatus', $latestPendingOffer) }}">
+              @csrf
+              @method('PATCH')
+              <input type="hidden" name="status" value="accepted">
+              <button class="px-3 py-1 rounded bg-emerald-600 text-white text-sm">Aceptar oferta</button>
+            </form>
+            <form method="POST" action="{{ route('offers.updateStatus', $latestPendingOffer) }}">
+              @csrf
+              @method('PATCH')
+              <input type="hidden" name="status" value="rejected">
+              <button class="px-3 py-1 rounded bg-red-600 text-white text-sm">Rechazar</button>
+            </form>
+          </div>
         </div>
       @endif
 

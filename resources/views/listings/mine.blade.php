@@ -38,7 +38,7 @@
               <span class="px-2 py-0.5 rounded {{ $listing->status==='available' ? 'bg-emerald-100 text-emerald-700' : ($listing->status==='reserved' ? 'bg-amber-100 text-amber-700' : 'bg-gray-200 text-gray-700') }}">{{ $statusLabel }}</span>
               <div class="flex gap-2">
                 <a href="{{ route('listings.edit', $listing) }}" class="px-2 py-1 rounded bg-blue-600 text-white">Editar</a>
-                <form method="POST" action="{{ route('listings.destroy', $listing) }}" onsubmit="return confirm('¿Eliminar este anuncio?');">
+                <form method="POST" action="{{ route('listings.destroy', $listing) }}" data-confirm="¿Eliminar este anuncio?">
                   @csrf
                   @method('DELETE')
                   <button class="px-2 py-1 rounded bg-red-600 text-white">Eliminar</button>

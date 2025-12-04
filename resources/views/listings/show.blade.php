@@ -68,7 +68,7 @@
             @if(auth()->id() === $listing->user_id)
               <div class="mt-4">
                 <a href="{{ route('listings.edit', $listing) }}" class="inline-flex items-center px-4 py-2 rounded bg-blue-600 text-white mb-3">Editar anuncio</a>
-                <form method="POST" action="{{ route('listings.destroy', $listing) }}" onsubmit="return confirm('¿Eliminar este anuncio? Esta acción no se puede deshacer.');">
+                <form method="POST" action="{{ route('listings.destroy', $listing) }}" data-confirm="¿Eliminar este anuncio? Esta acción no se puede deshacer.">
                   @csrf
                   @method('DELETE')
                   <button type="submit" class="px-4 py-2 rounded bg-red-600 text-white">Eliminar anuncio</button>
